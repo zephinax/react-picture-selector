@@ -286,6 +286,23 @@ function useImagePreview() {
   const modalImagePreview = useCallback(() => {
     const initialSize = calculateInitialSize();
     const { width, height } = imageSize;
+    const viewportWidth =
+      typeof window !== "undefined" ? window.innerWidth : initialSize.width;
+    const viewportHeight =
+      typeof window !== "undefined" ? window.innerHeight : initialSize.height;
+    const minStage = 340;
+    const wrapperWidth = Math.min(
+      Math.max(initialSize.width, minStage),
+      viewportWidth * 0.92,
+    );
+    const wrapperHeight = Math.min(
+      Math.max(initialSize.height, minStage),
+      viewportHeight * 0.82,
+    );
+    const isCompact = wrapperWidth < 420;
+    const buttonSide = isCompact ? 34 : 40;
+    const sliderTrackHeight = isCompact ? 140 : 160;
+    const sliderPadding = isCompact ? "0.6rem 0.5rem" : "0.75rem 0.75rem";
 
     const containerStyle: React.CSSProperties = {
       width: "100%",
@@ -302,8 +319,8 @@ function useImagePreview() {
 
     const imageWrapperStyle: React.CSSProperties = {
       position: "relative",
-      width: `min(${initialSize.width}px, 92vw)`,
-      height: `min(${initialSize.height}px, 82vh)`,
+      width: `${wrapperWidth}px`,
+      height: `${wrapperHeight}px`,
       maxWidth: "1200px",
       maxHeight: "82vh",
     };
@@ -328,7 +345,7 @@ function useImagePreview() {
       left: "1rem",
       right: "1rem",
       display: "flex",
-      gap: "0.5rem",
+      gap: isCompact ? "0.35rem" : "0.5rem",
       zIndex: 10,
       flexWrap: "wrap",
       alignItems: "center",
@@ -337,9 +354,9 @@ function useImagePreview() {
 
     const buttonStyle: React.CSSProperties = {
       backgroundColor: "rgba(0, 0, 0, 0.3)",
-      borderRadius: "1.5rem",
-      width: "40px",
-      height: "40px",
+      borderRadius: "0.55rem",
+      width: `${buttonSide}px`,
+      height: `${buttonSide}px`,
       backdropFilter: "blur(16px)",
       transition: "background-color 0.2s ease",
       border: "none",
@@ -384,7 +401,7 @@ function useImagePreview() {
       flexDirection: "column",
       gap: "0.4rem",
       alignItems: "center",
-      padding: "0.75rem 0.75rem",
+      padding: sliderPadding,
       minWidth: "46px",
       borderRadius: "999px",
       backgroundColor: "rgba(0,0,0,0.25)",
@@ -558,13 +575,13 @@ function useImagePreview() {
                   onPointerDown={handleSliderPointerDown}
                   onPointerMove={handleSliderPointerMove}
                   onPointerUp={handleSliderPointerUp}
-                  onPointerLeave={handleSliderPointerUp}
-                  style={{
-                    position: "relative",
-                    width: "10px",
-                    height: "160px",
-                    borderRadius: "9999px",
-                    background:
+                    onPointerLeave={handleSliderPointerUp}
+                    style={{
+                      position: "relative",
+                      width: "10px",
+                      height: `${sliderTrackHeight}px`,
+                      borderRadius: "9999px",
+                      background:
                       "linear-gradient(180deg, rgba(255,255,255,0.32) 0%, rgba(255,255,255,0.06) 100%)",
                     boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.2)",
                     cursor: "pointer",
