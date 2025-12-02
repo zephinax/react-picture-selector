@@ -48,7 +48,6 @@ const Modal: React.FC<ModalProps> = ({
     borderTopRightRadius: "1rem",
     borderBottomLeftRadius: "0.5rem",
     borderBottomRightRadius: "0.5rem",
-    border: "1px solid #e5e7eb",
     marginLeft: 0,
     marginRight: 0,
     transition: "all 300ms ease 200ms",
