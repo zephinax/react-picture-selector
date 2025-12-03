@@ -24,6 +24,7 @@ export interface ProfileSelectorPropsTypes {
   viewOnly?: boolean;
   title?: string;
   size?: number;
+  buttonsMinSize?: number;
   colors?: ColorPalette;
   apiConfig?: apiConfig;
   additionalClassNames?: additionalClassNames;

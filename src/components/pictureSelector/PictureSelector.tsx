@@ -39,6 +39,7 @@ const PictureSelector = ({
   viewOnly = false,
   title,
   size = 180,
+  buttonsMinSize = 30,
   showProgressRing = true,
   blurOnProgress = true,
   enableAbortController = true,
@@ -93,7 +94,10 @@ const PictureSelector = ({
     [uploadProgress, circumference]
   );
   const buttonPosition = useMemo(() => size * 0.06, [size]);
-  const buttonSize = useMemo(() => size * 0.2, [size]);
+  const buttonSize = useMemo(
+    () => Math.max(size * 0.2, buttonsMinSize),
+    [size, buttonsMinSize]
+  );
   const mergedColors = useMemo(
     () => ({ ...defaultColors, ...colors }),
     [colors]
