@@ -230,21 +230,20 @@ export const useImageHandler = ({
         }
         onChangeImage("", undefined);
       } else {
-        if (!apiConfig.deleteUrl) {
-          throw new Error("Delete URL is not provided");
+        if (apiConfig.deleteUrl) {
+          await axios.request({
+            method: apiConfig.deleteMethod || "POST",
+            url: `${apiConfig.baseUrl}${apiConfig.deleteUrl}`,
+            data:
+              typeof apiConfig.deleteBody === "function"
+                ? apiConfig.deleteBody(currentImageUrl)
+                : apiConfig.deleteBody,
+            headers: apiConfig.additionalHeaders,
+            signal: enableAbortController
+              ? abortControllerRef.current?.signal
+              : undefined,
+          });
         }
-        await axios.request({
-          method: apiConfig.deleteMethod || "POST",
-          url: `${apiConfig.baseUrl}${apiConfig.deleteUrl}`,
-          data:
-            typeof apiConfig.deleteBody === "function"
-              ? apiConfig.deleteBody(currentImageUrl)
-              : apiConfig.deleteBody,
-          headers: apiConfig.additionalHeaders,
-          signal: enableAbortController
-            ? abortControllerRef.current?.signal
-            : undefined,
-        });
         onChangeImage("", undefined);
       }
       apiConfig.onDeleteSuccess?.();
