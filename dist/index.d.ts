@@ -1,7 +1,7 @@
 import * as react_jsx_runtime from 'react/jsx-runtime';
 
 interface apiConfig {
-    deleteUrl: string;
+    deleteUrl?: string;
     uploadUrl: string;
     baseUrl: string;
     responsePath?: string;
@@ -22,6 +22,7 @@ interface ProfileSelectorPropsTypes {
     viewOnly?: boolean;
     title?: string;
     size?: number;
+    buttonsMinSize?: number;
     colors?: ColorPalette;
     apiConfig?: apiConfig;
     additionalClassNames?: additionalClassNames;
@@ -32,12 +33,12 @@ interface ProfileSelectorPropsTypes {
     testUploadDelay?: number;
 }
 interface ColorPalette {
-    primary: string;
-    error: string;
-    progress: string;
-    placeholder: string;
-    text: string;
-    textDisabled: string;
+    primary?: string;
+    error?: string;
+    progress?: string;
+    placeholder?: string;
+    text?: string;
+    textDisabled?: string;
 }
 interface additionalClassNames {
     title?: string;
@@ -47,7 +48,7 @@ interface additionalClassNames {
     image?: string;
 }
 
-declare const PictureSelector: ({ apiConfig, additionalClassNames, colors, imageUrl, type, onChangeImage, viewOnly, title, size, showProgressRing, blurOnProgress, enableAbortController, testMode, testUploadDelay, }: ProfileSelectorPropsTypes) => react_jsx_runtime.JSX.Element;
+declare const PictureSelector: ({ apiConfig, additionalClassNames, colors, imageUrl, type, onChangeImage, viewOnly, title, size, buttonsMinSize, showProgressRing, blurOnProgress, enableAbortController, testMode, testUploadDelay, }: ProfileSelectorPropsTypes) => react_jsx_runtime.JSX.Element;
 
 export { PictureSelector, PictureSelector as default };
 export type { ProfileSelectorPropsTypes };
