@@ -7,7 +7,6 @@ import { LuRefreshCcw } from "react-icons/lu";
 import { useImageHandler } from "./useImageHandler";
 
 const defaultApiConfig = {
-  deleteUrl: "DELETE_URL",
   uploadUrl: "UPLOAD_URL",
   baseUrl: "BASE_URL",
   responsePath: "data",
@@ -38,8 +37,9 @@ const PictureSelector = ({
   type = "profile",
   onChangeImage,
   viewOnly = false,
-  title = "Profile Picture",
+  title,
   size = 180,
+  buttonsMinSize = 30,
   showProgressRing = true,
   blurOnProgress = true,
   enableAbortController = true,
@@ -91,13 +91,16 @@ const PictureSelector = ({
   const circumference = useMemo(() => 2 * Math.PI * radius, [radius]);
   const strokeDashoffset = useMemo(
     () => (1 - uploadProgress / 100) * circumference,
-    [uploadProgress, circumference],
+    [uploadProgress, circumference]
   );
   const buttonPosition = useMemo(() => size * 0.06, [size]);
-  const buttonSize = useMemo(() => size * 0.2, [size]);
+  const buttonSize = useMemo(
+    () => Math.max(size * 0.2, buttonsMinSize),
+    [size, buttonsMinSize]
+  );
   const mergedColors = useMemo(
     () => ({ ...defaultColors, ...colors }),
-    [colors],
+    [colors]
   );
   const imageContainerStyle = useMemo(
     () => ({
@@ -105,7 +108,7 @@ const PictureSelector = ({
       height: `${size}px`,
       borderRadius: isCircle ? "50%" : "12%",
     }),
-    [size, isCircle],
+    [size, isCircle]
   );
 
   return (
@@ -131,12 +134,11 @@ const PictureSelector = ({
         }}
         className={`${additionalClassNames.titleContainer || ""}`}
       >
-        <h3 className={additionalClassNames.title || ""}>{title}</h3>
+        {title && <h3 className={additionalClassNames.title || ""}>{title}</h3>}
       </div>
       <div
         style={{
           display: "flex",
-          // flexDirection: "column",
           justifyItems: "center",
           justifyContent: "center",
           position: "relative",

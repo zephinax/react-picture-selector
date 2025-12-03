@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 export interface apiConfig {
-  deleteUrl: string;
+  deleteUrl?: string;
   uploadUrl: string;
   baseUrl: string;
   responsePath?: string;
@@ -24,6 +24,7 @@ export interface ProfileSelectorPropsTypes {
   viewOnly?: boolean;
   title?: string;
   size?: number;
+  buttonsMinSize?: number;
   colors?: ColorPalette;
   apiConfig?: apiConfig;
   additionalClassNames?: additionalClassNames;
@@ -56,12 +57,12 @@ export interface UploadResponse {
 }
 
 export interface ColorPalette {
-  primary: string;
-  error: string;
-  progress: string;
-  placeholder: string;
-  text: string;
-  textDisabled: string;
+  primary?: string;
+  error?: string;
+  progress?: string;
+  placeholder?: string;
+  text?: string;
+  textDisabled?: string;
 }
 
 export interface additionalClassNames {
