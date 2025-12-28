@@ -150,7 +150,9 @@ interface ApiConfig {
   // Optional Configuration
   responsePath?: string;    // Path to extract image URL from API response (default: "data.data")
   formDataName?: string;    // Name of the file field in FormData (default: "file")
-  additionalHeaders?: Record<string, string>; // Additional headers for API requests
+  additionalHeaders?: Record<string, string>; // Deprecated: shared headers for upload/delete
+  uploadHeaders?: Record<string, string>; // Upload-only headers
+  deleteHeaders?: Record<string, string>; // Delete-only headers
 
   // HTTP Methods
   uploadMethod?: "POST" | "PUT" | "PATCH";  // HTTP method for upload requests
@@ -208,6 +210,12 @@ interface ApiConfig {
         "X-API-Key": "your-api-key",
         "Client-Version": "1.0.0"
       },
+      uploadHeaders: {
+        "Content-Type": "multipart/form-data"
+      },
+      deleteHeaders: {
+        "Content-Type": "application/json"
+      },
       uploadMethod: "POST",
       deleteMethod: "DELETE",
       deleteBody: (imageUrl) => ({
@@ -244,6 +252,12 @@ interface ApiConfig {
         Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
         "X-Client-ID": "your-client-id"
       },
+      uploadHeaders: {
+        "Content-Type": "multipart/form-data"
+      },
+      deleteHeaders: {
+        "Content-Type": "application/json"
+      },
       deleteBody: {
         permanent: true,
         reason: "user_requested"
@@ -260,6 +274,10 @@ interface ApiConfig {
   * **Delete**: Accept requests with customizable method and body
   * **Response**: Return the image URL in the specified `responsePath`
 </Callout>
+
+## Debug mode
+
+Set `debug` on the component to log upload/delete lifecycle events to the console (authorization headers are redacted).
 
 ## Handling responses
 
@@ -476,6 +494,7 @@ The `PictureSelector` component is a highly customizable React component designe
 * **Abort Controller**: Cancel ongoing uploads using `AbortController` for better user control.
 * **Event Callbacks**: Support for `onUploadSuccess`, `onUploadError`, `onDeleteStart`, and `onDeleteSuccess` callbacks to handle upload and deletion events.
 * **Test Mode**: Simulate uploads and deletions with configurable delays, ideal for testing without API dependencies.
+* **Debug Logging**: Toggle verbose upload/delete lifecycle logs with a `debug` prop.
 * **Responsive Design**: Supports RTL layouts, responsive sizing, and both circular (profile) and rectangular image types.
 * **Robust Error Handling**: Displays clear error messages for failed operations, with proper cleanup to prevent resource leaks.
 * **Performance Optimizations**: Prevents race conditions, ensures clean percentage displays, and optimizes resource usage using `useMemo` and `useCallback`.
@@ -534,6 +553,12 @@ The `PictureSelector` component is a highly customizable React component designe
         additionalHeaders: {
           Authorization: "Bearer your-token",
         },
+        uploadHeaders: {
+          "Content-Type": "multipart/form-data",
+        },
+        deleteHeaders: {
+          "Content-Type": "application/json",
+        },
         uploadMethod: "POST",
         deleteMethod: "DELETE",
       };
@@ -547,6 +572,7 @@ The `PictureSelector` component is a highly customizable React component designe
           title="User Avatar"
           size={200}
           testMode={false}
+          debug={false}
         />
       );
     };
@@ -577,19 +603,20 @@ The `PictureSelector` component is a highly customizable React component designe
 
 ## Props overview
 
-| Prop                   | Type                                        | Required | Description                                                         |
-| ---------------------- | ------------------------------------------- | -------- | ------------------------------------------------------------------- |
-| `imageUrl`             | `string`                                    | ✅        | Current image shown in the selector or placeholder if empty         |
-| `title`                | `string`                                    | ✅        | Title rendered above the selector (and announced for accessibility) |
-| `type`                 | `"profile" \| "rectangle"`                  | ✅        | Controls layout, aspect ratio, and progress indicator style         |
-| `size`                 | `number`                                    | ✅        | Base dimension in pixels for the component                          |
-| `onChangeImage`        | `(url: string, response?: unknown) => void` | ✅        | Fires after upload/delete so you can persist state                  |
-| `apiConfig`            | `ApiConfig`                                 | ❌        | Enables real upload/delete requests with headers and callbacks      |
-| `testMode`             | `boolean`                                   | ❌        | Forces simulated uploads with configurable delays                   |
-| `colors`               | `ColorPalette`                              | ❌        | Overrides primary/error/progress/placeholder/text colors            |
-| `additionalClassNames` | `SelectorClassNames`                        | ❌        | Granular class overrides for title, buttons, or image shell         |
-| `showProgressRing`     | `boolean`                                   | ❌        | Toggles the radial indicator for profile images                     |
-| `blurOnProgress`       | `boolean`                                   | ❌        | Blurs the current photo while uploads run to hint a change          |
+| Prop                   | Type                                        | Required | Description                                                                |
+| ---------------------- | ------------------------------------------- | -------- | -------------------------------------------------------------------------- |
+| `imageUrl`             | `string`                                    | ✅        | Current image shown in the selector or placeholder if empty                |
+| `title`                | `string`                                    | ✅        | Title rendered above the selector (and announced for accessibility)        |
+| `type`                 | `"profile" \| "image"`                      | ✅        | Controls layout, aspect ratio, and progress indicator style                |
+| `size`                 | `number`                                    | ✅        | Base dimension in pixels for the component                                 |
+| `onChangeImage`        | `(url: string, response?: unknown) => void` | ✅        | Fires after upload/delete so you can persist state                         |
+| `apiConfig`            | `ApiConfig`                                 | ❌        | Enables real upload/delete requests with headers and callbacks             |
+| `testMode`             | `boolean`                                   | ❌        | Forces simulated uploads with configurable delays                          |
+| `colors`               | `ColorPalette`                              | ❌        | Overrides primary/error/progress/placeholder/text colors                   |
+| `additionalClassNames` | `SelectorClassNames`                        | ❌        | Granular class overrides for title, buttons, or image shell                |
+| `showProgressRing`     | `boolean`                                   | ❌        | Toggles the radial indicator for profile images                            |
+| `blurOnProgress`       | `boolean`                                   | ❌        | Blurs the current photo while uploads run to hint a change                 |
+| `debug`                | `boolean`                                   | ❌        | Logs upload/delete lifecycle details to the console (redacts auth headers) |
 
 ***
 
