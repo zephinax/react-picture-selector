@@ -17,7 +17,9 @@ interface ApiConfig {
   // Optional Configuration
   responsePath?: string;    // Path to extract image URL from API response (default: "data.data")
   formDataName?: string;    // Name of the file field in FormData (default: "file")
-  additionalHeaders?: Record<string, string>; // Additional headers for API requests
+  additionalHeaders?: Record<string, string>; // Deprecated: shared headers for upload/delete
+  uploadHeaders?: Record<string, string>; // Upload-only headers
+  deleteHeaders?: Record<string, string>; // Delete-only headers
 
   // HTTP Methods
   uploadMethod?: "POST" | "PUT" | "PATCH";  // HTTP method for upload requests
@@ -66,6 +68,12 @@ const apiConfig = {
     "X-API-Key": "your-api-key",
     "Client-Version": "1.0.0"
   },
+  uploadHeaders: {
+    "Content-Type": "multipart/form-data"
+  },
+  deleteHeaders: {
+    "Content-Type": "application/json"
+  },
   uploadMethod: "POST",
   deleteMethod: "DELETE",
   deleteBody: (imageUrl) => ({
@@ -100,6 +108,12 @@ const apiConfig = {
     Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
     "X-Client-ID": "your-client-id"
   },
+  uploadHeaders: {
+    "Content-Type": "multipart/form-data"
+  },
+  deleteHeaders: {
+    "Content-Type": "application/json"
+  },
   deleteBody: {
     permanent: true,
     reason: "user_requested"
@@ -114,6 +128,10 @@ Your API should support:
 - **Delete**: Accept requests with customizable method and body
 - **Response**: Return the image URL in the specified `responsePath`
 </Callout>
+
+## Debug mode
+
+Set `debug` on the component to log upload/delete lifecycle events to the console (authorization headers are redacted).
 
 ## Handling responses
 
