@@ -168,7 +168,7 @@ export const useImageHandler = ({
             );
             smoothProgressUpdate();
           },
-          headers: apiConfig.additionalHeaders,
+          headers: apiConfig.uploadHeaders,
         });
 
         const [response] = await Promise.all([uploadPromise, minUploadTime]);
@@ -238,7 +238,7 @@ export const useImageHandler = ({
               typeof apiConfig.deleteBody === "function"
                 ? apiConfig.deleteBody(currentImageUrl)
                 : apiConfig.deleteBody,
-            headers: apiConfig.additionalHeaders,
+            headers: apiConfig.deleteHeaders,
             signal: enableAbortController
               ? abortControllerRef.current?.signal
               : undefined,

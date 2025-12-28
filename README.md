@@ -102,7 +102,9 @@ interface apiConfig {
   baseUrl: string; // Base URL for API requests
   responsePath?: string; // Path to extract image URL from API response (default: "data.data")
   formDataName?: string; // Name of the file field in FormData
-  additionalHeaders?: Record<string, string>; // Additional headers for API requests
+  additionalHeaders?: Record<string, string>; // Deprecated: shared headers for upload/delete
+  uploadHeaders?: Record<string, string>; // Upload-only headers
+  deleteHeaders?: Record<string, string>; // Delete-only headers
   uploadMethod?: "POST" | "PUT" | "PATCH"; // HTTP method for upload requests
   deleteMethod?: "POST" | "DELETE" | "PUT"; // HTTP method for delete requests
   deleteBody?:
@@ -137,7 +139,7 @@ interface additionalClassNames {
 The `apiConfig` prop allows you to specify endpoints, HTTP methods, headers, and callbacks for upload and delete operations. In real mode, the component sends HTTP requests to the combined `baseUrl` and `uploadUrl`/`deleteUrl`. Ensure your API supports:
 
 - **Upload**: Accepts a `multipart/form-data` request with the file attached, using the specified `uploadMethod` (default: POST).
-- **Delete**: Accepts a request to the combined `baseUrl` and `deleteUrl`, with customizable `deleteMethod` (default: POST), `deleteBody`, and `additionalHeaders`.
+- **Delete**: Accepts a request to the combined `baseUrl` and `deleteUrl`, with customizable `deleteMethod` (default: POST), `deleteBody`, and `deleteHeaders` (or `additionalHeaders` for backwards compatibility).
 
 Example:
 
@@ -147,8 +149,12 @@ const apiConfig = {
   uploadUrl: "/upload",
   deleteUrl: "/remove/123",
   formDataName: "image",
-  additionalHeaders: {
+  uploadHeaders: {
     Authorization: "Bearer your-token",
+  },
+  deleteHeaders: {
+    Authorization: "Bearer your-token",
+    "Content-Type": "application/json",
   },
   uploadMethod: "POST",
   deleteMethod: "DELETE",
@@ -199,8 +205,12 @@ const App = () => {
     uploadUrl: "/upload",
     deleteUrl: "/remove/123",
     formDataName: "image",
-    additionalHeaders: {
+    uploadHeaders: {
       Authorization: "Bearer your-token",
+    },
+    deleteHeaders: {
+      Authorization: "Bearer your-token",
+      "Content-Type": "application/json",
     },
     uploadMethod: "POST",
     deleteMethod: "DELETE",

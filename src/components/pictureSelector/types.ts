@@ -6,6 +6,8 @@ export interface apiConfig {
   responsePath?: string;
   formDataName?: string;
   additionalHeaders?: Record<string, string>;
+  uploadHeaders?: Record<string, string>;
+  deleteHeaders?: Record<string, string>;
   uploadMethod?: "POST" | "PUT" | "PATCH";
   deleteMethod?: "POST" | "DELETE" | "PUT";
   deleteBody?:

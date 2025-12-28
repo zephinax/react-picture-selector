@@ -14,7 +14,7 @@ const defaultApiConfig = {
   deleteBody: {},
   deleteMethod: "POST",
   uploadMethod: "POST",
-  additionalHeaders: {
+  uploadHeaders: {
     "Content-Type": "multipart/form-data",
   },
   onUploadSuccess: () => {},
@@ -53,9 +53,14 @@ const PictureSelector = ({
   const mergedApiConfig = {
     ...defaultApiConfig,
     ...apiConfig,
-    additionalHeaders: {
-      ...defaultApiConfig.additionalHeaders,
+    uploadHeaders: {
+      ...defaultApiConfig.uploadHeaders,
       ...(apiConfig?.additionalHeaders || {}),
+      ...(apiConfig?.uploadHeaders || {}),
+    },
+    deleteHeaders: {
+      ...(apiConfig?.additionalHeaders || {}),
+      ...(apiConfig?.deleteHeaders || {}),
     },
   };
 
