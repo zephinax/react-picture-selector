@@ -75,6 +75,7 @@ const App = () => {
       type="profile"
       title="Profile Picture"
       size={180}
+      debug={false}
     />
   );
 };
@@ -140,6 +141,10 @@ The `apiConfig` prop allows you to specify endpoints, HTTP methods, headers, and
 
 - **Upload**: Accepts a `multipart/form-data` request with the file attached, using the specified `uploadMethod` (default: POST).
 - **Delete**: Accepts a request to the combined `baseUrl` and `deleteUrl`, with customizable `deleteMethod` (default: POST), `deleteBody`, and `deleteHeaders` (or `additionalHeaders` for backwards compatibility).
+
+## Debug Mode
+
+Set `debug` on the component to log upload/delete lifecycle events to the console (headers are redacted for `Authorization`).
 
 Example:
 

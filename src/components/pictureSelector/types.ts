@@ -33,6 +33,7 @@ export interface ProfileSelectorPropsTypes {
   showProgressRing?: boolean;
   blurOnProgress?: boolean;
   enableAbortController?: boolean;
+  debug?: boolean;
   testMode?: boolean;
   testUploadDelay?: number;
 }
@@ -83,4 +84,5 @@ export interface UseImageHandlerProps {
   currentImageUrl: string | null;
   enableAbortController: boolean;
   setImgError: (value: boolean) => void;
+  debug?: boolean;
 }
