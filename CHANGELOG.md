@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.4.0](https://github.com/Zephinax/react-picture-selector/compare/v2.3.9...v2.4.0) (2025-12-28)
+
 ### [2.3.6](https://github.com/Zephinax/react-picture-selector/compare/v2.3.5...v2.3.6) (2025-10-08)
 
 
