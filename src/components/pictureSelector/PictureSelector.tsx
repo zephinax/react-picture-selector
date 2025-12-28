@@ -14,9 +14,6 @@ const defaultApiConfig = {
   deleteBody: {},
   deleteMethod: "POST",
   uploadMethod: "POST",
-  additionalHeaders: {
-    "Content-Type": "multipart/form-data",
-  },
   onUploadSuccess: () => {},
   onUploadError: () => {},
   onDeleteStart: () => {},
@@ -43,6 +40,7 @@ const PictureSelector = ({
   showProgressRing = true,
   blurOnProgress = true,
   enableAbortController = true,
+  debug = false,
   testMode = false,
   testUploadDelay = 1000,
 }: ProfileSelectorPropsTypes) => {
@@ -53,9 +51,14 @@ const PictureSelector = ({
   const mergedApiConfig = {
     ...defaultApiConfig,
     ...apiConfig,
-    additionalHeaders: {
-      ...defaultApiConfig.additionalHeaders,
+    uploadHeaders: {
+      ...defaultApiConfig.uploadHeaders,
       ...(apiConfig?.additionalHeaders || {}),
+      ...(apiConfig?.uploadHeaders || {}),
+    },
+    deleteHeaders: {
+      ...(apiConfig?.additionalHeaders || {}),
+      ...(apiConfig?.deleteHeaders || {}),
     },
   };
 
@@ -74,6 +77,7 @@ const PictureSelector = ({
     enableAbortController,
     currentImageUrl: imageUrl,
     setImgError,
+    debug,
   });
   const defaultColors = {
     primary: "#2a84fa",

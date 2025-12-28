@@ -7,6 +7,8 @@ interface apiConfig {
     responsePath?: string;
     formDataName?: string;
     additionalHeaders?: Record<string, string>;
+    uploadHeaders?: Record<string, string>;
+    deleteHeaders?: Record<string, string>;
     uploadMethod?: "POST" | "PUT" | "PATCH";
     deleteMethod?: "POST" | "DELETE" | "PUT";
     deleteBody?: Record<string, unknown> | ((imageUrl: string) => Record<string, unknown>);
@@ -29,6 +31,7 @@ interface ProfileSelectorPropsTypes {
     showProgressRing?: boolean;
     blurOnProgress?: boolean;
     enableAbortController?: boolean;
+    debug?: boolean;
     testMode?: boolean;
     testUploadDelay?: number;
 }
@@ -48,7 +51,7 @@ interface additionalClassNames {
     image?: string;
 }
 
-declare const PictureSelector: ({ apiConfig, additionalClassNames, colors, imageUrl, type, onChangeImage, viewOnly, title, size, buttonsMinSize, showProgressRing, blurOnProgress, enableAbortController, testMode, testUploadDelay, }: ProfileSelectorPropsTypes) => react_jsx_runtime.JSX.Element;
+declare const PictureSelector: ({ apiConfig, additionalClassNames, colors, imageUrl, type, onChangeImage, viewOnly, title, size, buttonsMinSize, showProgressRing, blurOnProgress, enableAbortController, debug, testMode, testUploadDelay, }: ProfileSelectorPropsTypes) => react_jsx_runtime.JSX.Element;
 
 export { PictureSelector, PictureSelector as default };
 export type { ProfileSelectorPropsTypes };

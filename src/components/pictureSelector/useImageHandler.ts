@@ -13,6 +13,18 @@ const getNestedValue = (obj: any, path: string | string[]): any => {
   );
 };
 
+const redactHeaders = (headers?: Record<string, string>) => {
+  if (!headers) return undefined;
+  return Object.fromEntries(
+    Object.entries(headers).map(([key, value]) => {
+      if (key.toLowerCase() === "authorization") {
+        return [key, "REDACTED"];
+      }
+      return [key, value];
+    }),
+  );
+};
+
 export const useImageHandler = ({
   apiConfig,
   testMode,
@@ -21,6 +33,7 @@ export const useImageHandler = ({
   currentImageUrl,
   enableAbortController,
   setImgError,
+  debug = false,
 }: UseImageHandlerProps) => {
   const [uploadProgress, setUploadProgress] = useState<number>(0);
   const [error, setError] = useState<string | null>(null);
@@ -31,6 +44,11 @@ export const useImageHandler = ({
   const smoothIntervalRef = useRef<number | null>(null);
   const targetProgressRef = useRef<number>(0);
   const isFirstUpdateRef = useRef<boolean>(true);
+  const debugLog = (...args: unknown[]) => {
+    if (debug) {
+      console.debug("[PictureSelector]", ...args);
+    }
+  };
 
   const resetState = () => {
     setUploadProgress(0);
@@ -119,6 +137,15 @@ export const useImageHandler = ({
       apiConfig.onUploadError?.(new Error("Invalid file type"));
       return;
     }
+    debugLog("upload:start", {
+      fileName: file.name,
+      fileType: file.type,
+      fileSize: file.size,
+      method: apiConfig.uploadMethod || "POST",
+      url: `${apiConfig.baseUrl}${apiConfig.uploadUrl}`,
+      headers: redactHeaders(apiConfig.uploadHeaders),
+      testMode,
+    });
     const abortController = handleAbort();
     setLoading(true);
     setUploadProgress(0);
@@ -168,7 +195,7 @@ export const useImageHandler = ({
             );
             smoothProgressUpdate();
           },
-          headers: apiConfig.additionalHeaders,
+          headers: apiConfig.uploadHeaders,
         });
 
         const [response] = await Promise.all([uploadPromise, minUploadTime]);
@@ -181,6 +208,10 @@ export const useImageHandler = ({
           apiConfig.responsePath || "data.data",
         );
         responseData = response.data;
+        debugLog("upload:response", {
+          status: response.status,
+          responsePath: apiConfig.responsePath || "data.data",
+        });
         if (!newImageUrl) {
           throw new Error("Failed to extract image URL from response");
         }
@@ -193,6 +224,7 @@ export const useImageHandler = ({
       setLoading(false);
       onChangeImage(newImageUrl, responseData);
       apiConfig.onUploadSuccess?.(newImageUrl);
+      debugLog("upload:success", { imageUrl: newImageUrl });
       setUploadProgress(0);
       targetProgressRef.current = 0;
       isFirstUpdateRef.current = true;
@@ -209,6 +241,7 @@ export const useImageHandler = ({
         });
         apiConfig.onUploadError?.(error);
       }
+      debugLog("upload:error", error);
       resetState();
     }
   };
@@ -219,6 +252,16 @@ export const useImageHandler = ({
     setError(null);
     setImgError(false);
     apiConfig.onDeleteStart?.();
+    debugLog("delete:start", {
+      url: `${apiConfig.baseUrl}${apiConfig.deleteUrl}`,
+      method: apiConfig.deleteMethod || "POST",
+      headers: redactHeaders(apiConfig.deleteHeaders),
+      body:
+        typeof apiConfig.deleteBody === "function"
+          ? apiConfig.deleteBody(currentImageUrl)
+          : apiConfig.deleteBody,
+      testMode,
+    });
     try {
       if (testMode) {
         await new Promise((resolve) => setTimeout(resolve, 300));
@@ -231,28 +274,31 @@ export const useImageHandler = ({
         onChangeImage("", undefined);
       } else {
         if (apiConfig.deleteUrl) {
-          await axios.request({
+          const response = await axios.request({
             method: apiConfig.deleteMethod || "POST",
             url: `${apiConfig.baseUrl}${apiConfig.deleteUrl}`,
             data:
               typeof apiConfig.deleteBody === "function"
                 ? apiConfig.deleteBody(currentImageUrl)
                 : apiConfig.deleteBody,
-            headers: apiConfig.additionalHeaders,
+            headers: apiConfig.deleteHeaders,
             signal: enableAbortController
               ? abortControllerRef.current?.signal
               : undefined,
           });
+          debugLog("delete:response", { status: response.status });
         }
         onChangeImage("", undefined);
       }
       apiConfig.onDeleteSuccess?.();
+      debugLog("delete:success");
     } catch (error) {
       handleError(error, {
         setError: setError,
         context: "deleting image",
         isTestMode: testMode,
       });
+      debugLog("delete:error", error);
     } finally {
       setDeleting(false);
     }

@@ -6,6 +6,8 @@ export interface apiConfig {
   responsePath?: string;
   formDataName?: string;
   additionalHeaders?: Record<string, string>;
+  uploadHeaders?: Record<string, string>;
+  deleteHeaders?: Record<string, string>;
   uploadMethod?: "POST" | "PUT" | "PATCH";
   deleteMethod?: "POST" | "DELETE" | "PUT";
   deleteBody?:
@@ -31,6 +33,7 @@ export interface ProfileSelectorPropsTypes {
   showProgressRing?: boolean;
   blurOnProgress?: boolean;
   enableAbortController?: boolean;
+  debug?: boolean;
   testMode?: boolean;
   testUploadDelay?: number;
 }
@@ -81,4 +84,5 @@ export interface UseImageHandlerProps {
   currentImageUrl: string | null;
   enableAbortController: boolean;
   setImgError: (value: boolean) => void;
+  debug?: boolean;
 }
