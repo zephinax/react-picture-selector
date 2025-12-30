@@ -144,6 +144,7 @@ export const useImageHandler = ({
       method: apiConfig.uploadMethod || "POST",
       url: `${apiConfig.baseUrl}${apiConfig.uploadUrl}`,
       headers: redactHeaders(apiConfig.uploadHeaders),
+      withCredentials: apiConfig.withCredentials,
       testMode,
     });
     const abortController = handleAbort();
@@ -172,6 +173,7 @@ export const useImageHandler = ({
           url: `${apiConfig.baseUrl}${apiConfig.uploadUrl}`,
           data: formData,
           signal: abortController.signal,
+          withCredentials: apiConfig.withCredentials,
           onUploadProgress: (progressEvent) => {
             let progress = 0;
             if (progressEvent.total && progressEvent.total > 0) {
@@ -256,6 +258,7 @@ export const useImageHandler = ({
       url: `${apiConfig.baseUrl}${apiConfig.deleteUrl}`,
       method: apiConfig.deleteMethod || "POST",
       headers: redactHeaders(apiConfig.deleteHeaders),
+      withCredentials: apiConfig.withCredentials,
       body:
         typeof apiConfig.deleteBody === "function"
           ? apiConfig.deleteBody(currentImageUrl)
@@ -282,6 +285,7 @@ export const useImageHandler = ({
                 ? apiConfig.deleteBody(currentImageUrl)
                 : apiConfig.deleteBody,
             headers: apiConfig.deleteHeaders,
+            withCredentials: apiConfig.withCredentials,
             signal: enableAbortController
               ? abortControllerRef.current?.signal
               : undefined,

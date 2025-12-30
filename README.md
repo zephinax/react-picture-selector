@@ -106,6 +106,7 @@ interface apiConfig {
   additionalHeaders?: Record<string, string>; // Deprecated: shared headers for upload/delete
   uploadHeaders?: Record<string, string>; // Upload-only headers
   deleteHeaders?: Record<string, string>; // Delete-only headers
+  withCredentials?: boolean; // Send cookies/credentials with API requests
   uploadMethod?: "POST" | "PUT" | "PATCH"; // HTTP method for upload requests
   deleteMethod?: "POST" | "DELETE" | "PUT"; // HTTP method for delete requests
   deleteBody?:
@@ -209,6 +210,7 @@ const App = () => {
     baseUrl: "https://api.example.com",
     uploadUrl: "/upload",
     deleteUrl: "/remove/123",
+    withCredentials: true,
     formDataName: "image",
     uploadHeaders: {
       Authorization: "Bearer your-token",
@@ -259,6 +261,7 @@ export default App;
 ## Release Notes
 
 - **Latest Release**:
+  - Added `withCredentials` option to forward cookies/credentials on upload and delete requests.
   - Added support for passing full API response body as an optional second parameter to `onChangeImage`.
   - Prevented dragging of selected photo to improve user experience.
   - Improved error management with better validation (e.g., `deleteUrl` checks) and type safety for TypeScript.
