@@ -131,6 +131,7 @@ function ProfilePage() {
 <Callout type="warning" title="Common gotchas">
   * Always return a URL in your upload response at the path specified by `responsePath`.
   * When using Next.js app router, keep the component on the client (e.g., `use client`) because it relies on browser APIs.
+  * If your API relies on cookies/sessions, set `withCredentials` to `true` and configure CORS to allow credentialed requests.
 </Callout>
 
 
@@ -153,6 +154,7 @@ interface ApiConfig {
   additionalHeaders?: Record<string, string>; // Deprecated: shared headers for upload/delete
   uploadHeaders?: Record<string, string>; // Upload-only headers
   deleteHeaders?: Record<string, string>; // Delete-only headers
+  withCredentials?: boolean; // Send cookies/credentials on upload/delete requests
 
   // HTTP Methods
   uploadMethod?: "POST" | "PUT" | "PATCH";  // HTTP method for upload requests
@@ -204,6 +206,7 @@ interface ApiConfig {
       baseUrl: "https://api.example.com",
       uploadUrl: "/upload",
       deleteUrl: "/images/remove",
+      withCredentials: true,
       formDataName: "profile_picture",
       responsePath: "data.imageUrl",
       additionalHeaders: {
@@ -248,6 +251,7 @@ interface ApiConfig {
       baseUrl: "https://api.example.com",
       uploadUrl: "/v1/images/upload",
       deleteUrl: "/v1/images/delete",
+      withCredentials: true,
       additionalHeaders: {
         Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
         "X-Client-ID": "your-client-id"
@@ -273,6 +277,7 @@ interface ApiConfig {
   * **Upload**: Accept `multipart/form-data` with the file attached
   * **Delete**: Accept requests with customizable method and body
   * **Response**: Return the image URL in the specified `responsePath`
+  * **Credentials (optional)**: If you rely on session cookies, set `withCredentials: true` and configure CORS to allow credentialed requests.
 </Callout>
 
 ## Debug mode
@@ -549,6 +554,7 @@ The `PictureSelector` component is a highly customizable React component designe
         baseUrl: "https://api.example.com",
         uploadUrl: "/upload",
         deleteUrl: "/remove/123",
+        withCredentials: true,
         formDataName: "image",
         additionalHeaders: {
           Authorization: "Bearer your-token",
