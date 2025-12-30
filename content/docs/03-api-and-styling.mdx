@@ -20,6 +20,7 @@ interface ApiConfig {
   additionalHeaders?: Record<string, string>; // Deprecated: shared headers for upload/delete
   uploadHeaders?: Record<string, string>; // Upload-only headers
   deleteHeaders?: Record<string, string>; // Delete-only headers
+  withCredentials?: boolean; // Send cookies/credentials on upload/delete requests
 
   // HTTP Methods
   uploadMethod?: "POST" | "PUT" | "PATCH";  // HTTP method for upload requests
@@ -62,6 +63,7 @@ const apiConfig = {
   baseUrl: "https://api.example.com",
   uploadUrl: "/upload",
   deleteUrl: "/images/remove",
+  withCredentials: true,
   formDataName: "profile_picture",
   responsePath: "data.imageUrl",
   additionalHeaders: {
@@ -104,6 +106,7 @@ const apiConfig = {
   baseUrl: "https://api.example.com",
   uploadUrl: "/v1/images/upload",
   deleteUrl: "/v1/images/delete",
+  withCredentials: true,
   additionalHeaders: {
     Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
     "X-Client-ID": "your-client-id"
@@ -127,6 +130,7 @@ Your API should support:
 - **Upload**: Accept `multipart/form-data` with the file attached
 - **Delete**: Accept requests with customizable method and body
 - **Response**: Return the image URL in the specified `responsePath`
+- **Credentials (optional)**: If you rely on session cookies, set `withCredentials: true` and configure CORS to allow credentialed requests.
 </Callout>
 
 ## Debug mode

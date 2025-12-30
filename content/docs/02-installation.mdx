@@ -116,4 +116,5 @@ function ProfilePage() {
 <Callout type="warning" title="Common gotchas">
 - Always return a URL in your upload response at the path specified by `responsePath`.
 - When using Next.js app router, keep the component on the client (e.g., `use client`) because it relies on browser APIs.
+- If your API relies on cookies/sessions, set `withCredentials` to `true` and configure CORS to allow credentialed requests.
 </Callout>
