@@ -9,6 +9,7 @@ interface apiConfig {
     additionalHeaders?: Record<string, string>;
     uploadHeaders?: Record<string, string>;
     deleteHeaders?: Record<string, string>;
+    withCredentials?: boolean;
     uploadMethod?: "POST" | "PUT" | "PATCH";
     deleteMethod?: "POST" | "DELETE" | "PUT";
     deleteBody?: Record<string, unknown> | ((imageUrl: string) => Record<string, unknown>);

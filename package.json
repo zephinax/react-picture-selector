@@ -1,6 +1,6 @@
 {
   "name": "react-picture-selector",
-  "version": "2.4.0",
+  "version": "2.4.1",
   "description": "A highly customizable React component for image selection, upload, and delete with progress indicators and responsive design",
   "main": "dist/index.mjs",
   "module": "dist/index.mjs",
