@@ -11,6 +11,7 @@ const defaultApiConfig = {
   baseUrl: "BASE_URL",
   responsePath: "data",
   formDataName: "File",
+  withCredentials: false,
   deleteBody: {},
   deleteMethod: "POST",
   uploadMethod: "POST",
