@@ -50,7 +50,7 @@ function useImagePreview() {
       if (container) {
         container.requestFullscreen?.().catch((err: any) => {
           console.error(
-            `Error attempting to enable fullscreen: ${err.message}`
+            `Error attempting to enable fullscreen: ${err.message}`,
           );
         });
       }
@@ -112,7 +112,7 @@ function useImagePreview() {
 
     return Math.min(
       containerDimensions.width / imageSize.width,
-      containerDimensions.height / imageSize.height
+      containerDimensions.height / imageSize.height,
     );
   }, [
     containerDimensions.height,
@@ -143,7 +143,7 @@ function useImagePreview() {
   const clamp = useCallback(
     (value: number, min: number, max: number) =>
       Math.min(Math.max(value, min), max),
-    []
+    [],
   );
 
   const applyScale = useCallback(
@@ -168,7 +168,7 @@ function useImagePreview() {
         return safeScale;
       });
     },
-    [clamp, maxScale, minScale]
+    [clamp, maxScale, minScale],
   );
 
   const handleWheel = useCallback(
@@ -177,7 +177,7 @@ function useImagePreview() {
       const delta = e.deltaY > 0 ? -0.1 : 0.1;
       applyScale(scale * (1 + delta), { x: e.clientX, y: e.clientY });
     },
-    [applyScale, scale]
+    [applyScale, scale],
   );
 
   const handlePointerDown = useCallback((e: React.PointerEvent) => {
@@ -199,7 +199,7 @@ function useImagePreview() {
         y: prev.y + deltaY,
       }));
     },
-    [isPanning]
+    [isPanning],
   );
 
   const handlePointerUp = useCallback(() => {
@@ -229,7 +229,7 @@ function useImagePreview() {
       const step = direction === "in" ? 0.15 : -0.15;
       applyScale(scale * (1 + step));
     },
-    [applyScale, scale]
+    [applyScale, scale],
   );
 
   const updateScaleFromSlider = useCallback(
@@ -241,7 +241,7 @@ function useImagePreview() {
       const target = maxScale - ratio * (maxScale - minScale);
       applyScale(target);
     },
-    [applyScale, clamp, maxScale, minScale]
+    [applyScale, clamp, maxScale, minScale],
   );
 
   const handleSliderPointerDown = useCallback(
@@ -250,7 +250,7 @@ function useImagePreview() {
       e.currentTarget.setPointerCapture?.(e.pointerId);
       updateScaleFromSlider(e.clientY);
     },
-    [updateScaleFromSlider]
+    [updateScaleFromSlider],
   );
 
   const handleSliderPointerMove = useCallback(
@@ -258,7 +258,7 @@ function useImagePreview() {
       if (!isSliderDragging) return;
       updateScaleFromSlider(e.clientY);
     },
-    [isSliderDragging, updateScaleFromSlider]
+    [isSliderDragging, updateScaleFromSlider],
   );
 
   const handleSliderPointerUp = useCallback(() => {
@@ -274,7 +274,7 @@ function useImagePreview() {
     const ratio = Math.min(
       maxWidth / imageSize.width,
       maxHeight / imageSize.height,
-      1
+      1,
     );
 
     return {
@@ -402,7 +402,7 @@ function useImagePreview() {
       gap: "0.4rem",
       alignItems: "center",
       padding: sliderPadding,
-      minWidth: "46px",
+      minWidth: "36px",
       borderRadius: "999px",
       backgroundColor: "rgba(0,0,0,0.25)",
       backdropFilter: "blur(10px)",
@@ -575,13 +575,13 @@ function useImagePreview() {
                   onPointerDown={handleSliderPointerDown}
                   onPointerMove={handleSliderPointerMove}
                   onPointerUp={handleSliderPointerUp}
-                    onPointerLeave={handleSliderPointerUp}
-                    style={{
-                      position: "relative",
-                      width: "10px",
-                      height: `${sliderTrackHeight}px`,
-                      borderRadius: "9999px",
-                      background:
+                  onPointerLeave={handleSliderPointerUp}
+                  style={{
+                    position: "relative",
+                    width: "10px",
+                    height: `${sliderTrackHeight}px`,
+                    borderRadius: "9999px",
+                    background:
                       "linear-gradient(180deg, rgba(255,255,255,0.32) 0%, rgba(255,255,255,0.06) 100%)",
                     boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.2)",
                     cursor: "pointer",
