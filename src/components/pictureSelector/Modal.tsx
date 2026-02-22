@@ -92,7 +92,6 @@ const Modal: React.FC<ModalProps> = ({
     transition: "all 300ms ease 200ms",
     opacity: isOpen ? 1 : 0,
     width: "auto",
-    maxWidth: "90vw",
     ...sizeStyles[size as keyof typeof sizeStyles],
   };
 
