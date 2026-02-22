@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { ModalProps } from "./types";
 import ReactDOM from "react-dom";
 
@@ -11,18 +11,57 @@ const Modal: React.FC<ModalProps> = ({
   overflowY = "overflow-y-auto",
   childrenClass,
 }) => {
+  const modalRef = useRef<HTMLDivElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
+
   const handleClose = () => {
     onClose();
   };
 
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handlePointerDown = (event: PointerEvent) => {
+      const targetNode = event.target as Node;
+      // Close when the click lands outside of the modal content or on the overlay itself.
+      if (
+        modalRef.current &&
+        !modalRef.current.contains(targetNode) &&
+        (overlayRef.current?.contains(targetNode) ?? true)
+      ) {
+        onClose();
+      }
+    };
+
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        onClose();
+      }
+    };
+
+    const listenerOptions: AddEventListenerOptions = { capture: true };
+
+    document.addEventListener("pointerdown", handlePointerDown, listenerOptions);
+    document.addEventListener("keydown", handleEscape);
+
+    return () => {
+      document.removeEventListener(
+        "pointerdown",
+        handlePointerDown,
+        listenerOptions
+      );
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, [isOpen, onClose]);
+
   // Size mapping
   const sizeStyles = {
-    sm: { width: "370px" },
-    md: { width: "750px" },
-    lg: { width: "1100px" },
-    xl: { width: "80%" },
-    full: { width: "90%" },
-    fit: {},
+    sm: { maxWidth: "370px" },
+    md: { maxWidth: "750px" },
+    lg: { maxWidth: "1100px" },
+    xl: { maxWidth: "80vw" },
+    full: { maxWidth: "90vw" },
+    fit: { maxWidth: "90vw" },
   };
 
   const overlayStyle: React.CSSProperties = {
@@ -52,7 +91,8 @@ const Modal: React.FC<ModalProps> = ({
     marginRight: 0,
     transition: "all 300ms ease 200ms",
     opacity: isOpen ? 1 : 0,
-    maxWidth: "90%",
+    width: "auto",
+    maxWidth: "90vw",
     ...sizeStyles[size as keyof typeof sizeStyles],
   };
 
@@ -65,11 +105,12 @@ const Modal: React.FC<ModalProps> = ({
   return (
     isOpen &&
     ReactDOM.createPortal(
-      <div onClick={handleClose} style={overlayStyle}>
+      <div onClick={handleClose} style={overlayStyle} ref={overlayRef}>
         <div
           onClick={(e) => e.stopPropagation()}
           style={modalStyle}
           className={className}
+          ref={modalRef}
         >
           <div style={contentStyle} className={childrenClass}>
             {children}
