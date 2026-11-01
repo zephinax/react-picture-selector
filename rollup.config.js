@@ -6,7 +6,11 @@ import terser from "@rollup/plugin-terser";
 import json from "@rollup/plugin-json";
 import analyze from "rollup-plugin-analyzer";
 import replace from "@rollup/plugin-replace";
-import packageJson from "./package.json" assert { type: "json" };
+import { readFileSync } from "fs";
+
+const packageJson = JSON.parse(
+  readFileSync(new URL("./package.json", import.meta.url), "utf-8")
+);
 
 export default [
   {

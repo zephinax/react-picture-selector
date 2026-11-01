@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { ModalProps } from "./types";
-import ReactDOM from "react-dom";
+import { createPortal } from "react-dom";
 
 const Modal: React.FC<ModalProps> = ({
   isOpen,
@@ -101,23 +101,22 @@ const Modal: React.FC<ModalProps> = ({
     overflowY: overflowY === "overflow-y-auto" ? "auto" : "visible",
   };
 
-  return (
-    isOpen &&
-    ReactDOM.createPortal(
-      <div onClick={handleClose} style={overlayStyle} ref={overlayRef}>
-        <div
-          onClick={(e) => e.stopPropagation()}
-          style={modalStyle}
-          className={className}
-          ref={modalRef}
-        >
-          <div style={contentStyle} className={childrenClass}>
-            {children}
-          </div>
+  if (typeof window === "undefined" || !isOpen) return null;
+
+  return createPortal(
+    <div onClick={handleClose} style={overlayStyle} ref={overlayRef}>
+      <div
+        onClick={(e) => e.stopPropagation()}
+        style={modalStyle}
+        className={className}
+        ref={modalRef}
+      >
+        <div style={contentStyle} className={childrenClass}>
+          {children}
         </div>
-      </div>,
-      document.body,
-    )
+      </div>
+    </div>,
+    document.body,
   );
 };
 
