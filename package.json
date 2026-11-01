@@ -14,7 +14,8 @@
     "build": "rollup -c --bundleConfigAsCjs",
     "prepublishOnly": "npm run build",
     "release:manual": "standard-version --release-as",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "homepage": "https://zephinax.github.io/react-picture-selector",
   "bugs": {
@@ -57,8 +58,11 @@
     "@rollup/plugin-replace": "^6.0.2",
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^11.1.6",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.2.0",
     "@types/react": "^18.3.24",
     "@types/react-dom": "^18.3.7",
+    "jsdom": "^26.0.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-icons": "^5.3.0",
@@ -67,7 +71,8 @@
     "rollup-plugin-auto-external": "^2.0.0",
     "rollup-plugin-dts": "^6.1.1",
     "tslib": "^2.6.3",
-    "typescript": "^5.5.3"
+    "typescript": "^5.5.3",
+    "vitest": "^3.0.5"
   },
   "keywords": [
     "react",
