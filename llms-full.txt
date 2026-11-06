@@ -340,8 +340,6 @@ interface SelectorClassNames {
   edit?: string;
   delete?: string;
   image?: string;
-  progressText?: string;
-  previewButton?: string;
 }
 ```
 
@@ -451,19 +449,19 @@ Use `colors` for token-level changes and `additionalClassNames` when you need to
 <Cards>
   <Card title="Profile Type" description="Circular image with ring progress indicator. Ideal for user avatars and profile pictures." />
 
-  <Card title="Rectangle Type" description="Rectangular image with percentage progress bar. Perfect for general image uploads." />
+  <Card title="Image Type" description="Rectangular image with percentage progress bar. Perfect for general image uploads." />
 </Cards>
 
 ```jsx
 // Profile (Circular)
 <PictureSelector type="profile" size={150} />
 
-// Rectangle
-<PictureSelector type="rectangle" size={200} />
+// Image (Rectangular)
+<PictureSelector type="image" size={200} />
 ```
 
-<Callout type="success" title="Tailwind CSS Compatible">
-   The component uses Tailwind CSS classes by default, but you can override any style using the color palette and additionalClassNames props. 
+<Callout type="success" title="Zero CSS Setup">
+   The component uses pure inline styles without requiring Tailwind CSS or external stylesheets. You can override or extend any style using the color palette and additionalClassNames props. 
 </Callout>
 
 
