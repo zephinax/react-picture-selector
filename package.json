@@ -10,8 +10,8 @@
     "dist"
   ],
   "scripts": {
-    "rollup": "rollup -c --bundleConfigAsCjs",
-    "build": "rollup -c --bundleConfigAsCjs",
+    "rollup": "rollup -c",
+    "build": "rollup -c",
     "prepublishOnly": "npm run build",
     "release:manual": "standard-version --release-as",
     "test": "vitest run",

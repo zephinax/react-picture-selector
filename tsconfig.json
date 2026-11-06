@@ -16,5 +16,6 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": ["src", "src/global.d.ts"]
+  "include": ["src", "src/global.d.ts"],
+  "exclude": ["src/**/*.test.tsx", "src/**/*.test.ts", "vitest.config.ts", "vitest.setup.ts"]
 }

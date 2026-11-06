@@ -30,7 +30,7 @@ describe("PictureSelector", () => {
       />
     );
 
-    expect(screen.getByAltText("Profile Picture")).toBeInTheDocument();
+    expect(screen.getByText("Current profile picture")).toBeInTheDocument();
     expect(screen.getByLabelText("Delete profile picture")).toBeInTheDocument();
   });
 });

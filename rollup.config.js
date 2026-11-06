@@ -39,7 +39,7 @@ export default [
   {
     input: "./src/index.ts",
     output: [{ file: packageJson.types }],
-    plugins: [dts.default()],
+    plugins: [(dts.default || dts)()],
     external: [/\.css$/],
   },
 ];
